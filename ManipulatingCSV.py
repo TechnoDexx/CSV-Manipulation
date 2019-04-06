@@ -1,24 +1,26 @@
 import csv
+import sys
 
-with open('weather_small_conditions_2018.csv', mode='w') as rez_csv_file:
-    data_writer = csv.writer(rez_csv_file)
+output = ''.join(sys.argv[1])
 
-    with open('weather_small_conditions.csv') as csv_file:
+with open('weather_small_conditions_2018.csv', 'w') as rez_csv_file:
+    with open(output) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        print(type(csv_reader))
         line_count = 0
         l1 = ''
+
         for row in csv_reader:
             l1 = ','.join(row)
-
             exists = l1.find('2016')
 
             if exists >= 0:
                 l1 = l1.replace("2016", "2018", 1)
 
             line_count += 1
-            print(l1, '  -  ', len(l1), '  --  ', exists)
+            print(l1)
+            rez_csv_file.write(l1 + '\n')
 
-        # else:
-        #     print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-        #     line_count += 1
+        rez_csv_file.close()
+
         print(f"Обработано {line_count} строк.")
